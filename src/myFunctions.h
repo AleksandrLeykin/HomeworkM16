@@ -13,6 +13,9 @@ void startMessengerChat() {
 		user1->enterChat();
 		//список всех пользователей(list of all users)
 		user1->getPersons();
+		//развилка либо ввод сообщения, либо просмотр входящих
+			//fork either enter a message or view inbox
+		user1->MenuChoice();
 
 
 		std::cout << "Хотите продолжить работу с мессенджером?" << std::endl;

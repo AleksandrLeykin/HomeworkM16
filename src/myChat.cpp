@@ -91,6 +91,58 @@ void myChat::getPersons()
 	std::cout << std::endl;
 }
 
+void myChat::MenuChoice()
+{
+	std::cout << "Выберите дейтсвие:\n"
+		<< "1)Ввести сообщение.\t2)Просмотреть сообщения.\t3)Назад.\n";
+	int buffer = getint();
+	while (true)
+	{
+		switch (buffer)
+		{
+		case 1:
+			std::cout << "1)Личное сообщение.\t2)Всем.\n";
+			{
+				int x = getint();
+				if (x == 1)
+				{
+					user_selection();
+				}
+				else
+				{
+					std::string text = getStringLine();
+					for (int i = 0; i < m_data.size(); ++i)
+					{
+						m_data[i].m_mail.push_back(text);
+					}
+				}
+				return;
+			}
+		case 2:
+		{
+			std::cout << "Зарегестрированных пользователей: " << m_data.size() << std::endl;
+			for (int i = 0; i < m_data.size(); i++)
+			{
+				std::cout << (i + 1) << ")." << m_data[i].m_nickName << " ";
+			}
+			std::cout << "\n";
+			std::cout << "Выберите себя." << std::endl;
+			int temp = getint() - 1;
+			for (int i = 0; i < m_data[temp].m_mail.size(); ++i)
+			{
+				std::cout << m_data[temp].m_mail[i] << std::endl;
+			}
+			return;
+		}
+		case 3:
+			return;
+		default:
+			std::cout << "Не выбрано действие!!" << "\n";
+			break;
+		}
+	}
+}
+
 bool myChat::sing_in()
 {
 	std::cout << "Введите свое имя:" << std::endl;
@@ -116,6 +168,39 @@ bool myChat::sing_in()
 	return true;	
 }
 
+std::string myChat::writeMessage()
+{
+	std::string message = getStringLine();
+	oldMessage.push_back(message);
+	return message;
+}
+
+void myChat::user_selection()
+{
+	while (true)
+	{
+		std::cout << "Кому хотите послать сообщение? ";
+		int number = getint();
+		if (number < 1 || number > m_data.size())
+		{
+			std::cout << "Такого пользователя не существует!!\n";
+		}
+		else
+		{
+			for (int i = 0; i < m_data.size(); i++)
+			{
+				if (number == i + 1)
+				{
+					std::cout << "Вы пишите - " << m_data[i].m_nickName << "\n";
+					m_data[i].m_mail.push_back(writeMessage());
+				}
+				continue;
+			}
+			return;
+		}
+	}
+}
+
 std::string myChat::getValue() {
 	std::string str = "";
 	std::cin >> str;
@@ -133,6 +218,15 @@ int myChat::getint() {
 		else
 			return num;
 	}	
+}
+
+std::string myChat::getStringLine()
+{
+	std::cout << "Введите свое сообщение: ";
+	std::string str = "";
+	std::cin.get();
+	getline(std::cin, str);
+	return str;
 }
 
 void myChat::cinClear() {
